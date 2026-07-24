@@ -6,8 +6,7 @@ import {
   Body,
   UploadedFile,
   UseInterceptors,
-  BadRequestException,
-  Get,
+  BadRequestException
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MediaService } from './media.service';
@@ -31,22 +30,20 @@ export class MediaController {
     @Body() body: {
       entityType: string;
       entityId: string;
-      ownerId: string;
       isPrimary?: boolean;
       isPrivate?: boolean;
       sortOrder?: number; 
     },
   ) {
     if (!file) throw new BadRequestException('Fichier requis');
-    if (!body.entityType || !body.entityId || !body.ownerId) {
-      throw new BadRequestException('entityType, entityId et ownerId requis');
+    if (!body.entityType || !body.entityId) {
+      throw new BadRequestException('entityType et entityId requis');
     }
 
     return this.mediaService.upload(
       file,
       body.entityType,
       body.entityId,
-      body.ownerId,
       {
         isPrimary: body.isPrimary,
         isPrivate: body.isPrivate,

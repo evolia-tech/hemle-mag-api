@@ -47,9 +47,6 @@ isPrivate: boolean;
 @Column({ default: 0 })
 sortOrder: number;
 
-@Column()
-ownerId: string;
-
 @CreateDateColumn()
 createdAt: Date;
 

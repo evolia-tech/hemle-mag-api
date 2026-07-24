@@ -1,5 +1,3 @@
-// src/modules/magazines/magazines.controller.ts
-
 import {
   Controller,
   Get,
@@ -11,17 +9,15 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
+  UploadedFiles,
 } from '@nestjs/common';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
-import { Role } from 'src/modules/users/enums/role.enum';
+import { Role } from 'src/modules/staffs/enums/role.enum';
 import { MagazinesService } from '../magazines.service';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateMediaDto } from 'src/modules/media/dto/create-media.dto';
-import { CreateMagazineDto } from '../dto/create-magazine.dto';
-import { UpdateMagazineDto } from '../dto/update-magazine.dto';
+import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
+import { CurrentStaff } from 'src/common/decorators/current-staff.decorator';
 
 @Controller('admin/magazines')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -31,31 +27,45 @@ export class AdminMagazinesController {
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EDITOR)
   @Get()
   findAll() {
-    return this.magazinesService.findAllWithCover();
+    return this.magazinesService.findAllWithMedia();
+  }
+
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EDITOR)
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.magazinesService.findOneWithMedia(id);
   }
 
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EDITOR)
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'coverImage', maxCount: 1 },      // cover image
+    { name: 'pdfFile', maxCount: 1 },   // pdf
+  ]))
   create(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() body: CreateMagazineDto,
-    @CurrentUser('id') userId: string,
+    @UploadedFiles() files: {
+      coverImage?: Express.Multer.File[];
+      pdfFile?: Express.Multer.File[];
+    },
+    @Body() body: any,
   ) {
 
-    return this.magazinesService.create(body, file, userId);
+    const cover = files.coverImage?.[0];
+    const pdf = files.pdfFile?.[0];
+
+    return this.magazinesService.create(body, cover, pdf);
   }
 
   @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Patch(':id')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('coverImage'))
   update(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
-    @Body() body: UpdateMagazineDto,
-    @CurrentUser('id') userId: string,
+    @Body() body: any,
   ) {
-    return this.magazinesService.update(id, body, file, userId);
+    console.log("here");
+    return this.magazinesService.update(id, body, file);
   }
 
   @Roles(Role.SUPER_ADMIN)

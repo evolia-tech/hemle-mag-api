@@ -1,7 +1,15 @@
+import { Role } from '../../modules/staffs/enums/role.enum';
+
+/**
+ * Payload encodé dans le JWT.
+ * Contient les informations minimales nécessaires pour l'autorisation.
+ */
 export interface JwtPayload {
-  sub: string; // User ID
+  /** UUID du membre staff */
+  sub: string;
   email: string;
-  role: string; // UserRole
-  firstName: string; // <<< NOUVEAU
-  lastName: string;  // <<< NOUVEAU
+  /** Tableau des rôles RBAC du membre */
+  roles: Role[];
+  firstName: string;
+  lastName: string;
 }

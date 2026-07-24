@@ -6,8 +6,13 @@ import { DatabaseModule } from './database/database.module';
 import { appConfig } from './config/app.config';
 import { MagazinesModule } from './modules/magazines/magazines.module';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './modules/users/users.module';
+import { StaffsModule } from './modules/staffs/staffs.module';
 import { MediaModule } from './modules/media/media.module';
+import { PaymentsModule } from './modules/payments/payments.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { NewsletterModule } from './modules/newsletter/newsletter.module';
+import { MailModule } from './modules/mail/mail.module';
+import { ArticlesModule } from './modules/articles/articles.module';
 
 @Module({
   imports: [
@@ -15,11 +20,16 @@ import { MediaModule } from './modules/media/media.module';
       isGlobal: true,
       load: [appConfig],
     }),
+    EventEmitterModule.forRoot(),
     DatabaseModule,
-    UsersModule,
+    StaffsModule,
     AuthModule,
     MediaModule.registerMedia(),
+    PaymentsModule.registerPayments(),
     MagazinesModule,
+    NewsletterModule,
+    MailModule,
+    ArticlesModule,
 
   ],
   controllers: [AppController],

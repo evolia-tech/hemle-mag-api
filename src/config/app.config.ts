@@ -16,7 +16,7 @@ export const appConfig = () => ({
     secretKey: process.env.STRIPE_SECRET_KEY,
     webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
     currency: 'eur',
-    successUrl: `${process.env.FRONTEND_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+    successUrl: `${process.env.FRONTEND_URL}/confirmation?session_id={CHECKOUT_SESSION_ID}`,
     cancelUrl: `${process.env.FRONTEND_URL}/payment/cancel`,
   },
   jwt: { // <<< NOUVEAU
@@ -25,5 +25,13 @@ export const appConfig = () => ({
   },
   frontend: {
     url: process.env.FRONTEND_URL,
+  },
+  mail: {
+    host: process.env.SMTP_HOST || 'smtp.o2switch.net',
+    port: parseInt(process.env.SMTP_PORT || '465', 10),
+    secure: process.env.SMTP_SECURE === 'true',
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+    from: process.env.SMTP_FROM || '"HEMLE MAG" <contact@hemle-mag.com>',
   },
 });

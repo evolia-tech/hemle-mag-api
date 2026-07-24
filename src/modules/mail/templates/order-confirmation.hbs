@@ -1,0 +1,34 @@
+<div
+  style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
+  <div style="background-color: #0c2f2a; padding: 25px; text-align: center; border-radius: 8px 8px 0 0;">
+    <h1 style="color: white; margin: 0; font-size: 26px; letter-spacing: 2px; font-weight: 500;">HEMLE MAG</h1>
+  </div>
+  <div
+    style="padding: 30px; border: 1px solid #e0e0e0; border-top: none; border-radius: 0 0 8px 8px; background-color: #ffffff;">
+    <p style="font-size: 16px;">Bonjour <strong>{{customerName}}</strong>,</p>
+    <p style="font-size: 15px;">Merci pour votre achat sur HEMLE MAG ! Votre paiement a été validé avec succès.</p>
+    <p style="font-size: 15px; margin-bottom: 20px;">Vous pouvez récupérer vos magazines numériques en cliquant sur les
+      boutons ci-dessous :</p>
+
+    <ul style="padding: 0; margin: 0 0 30px 0;">
+      {{#each items}}
+      <li
+        style="margin-bottom: 15px; list-style: none; padding: 15px; background: #fcfcfc; border-radius: 8px; border-left: 4px solid #0c2f2a; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+        <strong style="color: #0c2f2a; font-size: 16px; font-family: sans-serif;">{{this.title}}</strong><br />
+        <a href="{{this.downloadUrl}}"
+          style="display: inline-block; margin-top: 10px; padding: 10px 20px; background-color: #0c2f2a; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 14px; font-family: sans-serif;">Télécharger
+          le PDF</a>
+        <p style="margin: 8px 0 0 0; font-size: 12px; color: #888; font-family: sans-serif;">Ce lien de téléchargement
+          est valable pendant 72 heures.</p>
+      </li>
+      {{/each}}
+    </ul>
+
+    <p style="font-size: 14px; color: #555;">Si vous rencontrez des difficultés de téléchargement, n'hésitez pas à
+      répondre directement à cet email.</p>
+    <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;" />
+    <p style="font-size: 11px; color: #999; text-align: center; margin: 0;">
+      HEMLE MAG &copy; {{currentYear}}. Tous droits réservés.
+    </p>
+  </div>
+</div>

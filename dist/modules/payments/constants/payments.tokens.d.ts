@@ -1,0 +1,1 @@
+export declare const PAYMENTS_PROVIDER = "PAYMENTS_PROVIDER";

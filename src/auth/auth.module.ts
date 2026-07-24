@@ -2,16 +2,20 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { UsersModule } from '../modules/users/users.module';
+import { StaffsModule } from '../modules/staffs/staffs.module';
+import { Staff } from '../modules/staffs/entities/staff.entity';
 import { StringValue } from 'ms';
 
 @Module({
   imports: [
-    UsersModule,
-    PassportModule,
+    StaffsModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    // Injection du repo Staff directement pour la stratégie JWT
+    TypeOrmModule.forFeature([Staff]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -20,7 +24,7 @@ import { StringValue } from 'ms';
         const expiresIn = configService.get<string>('jwt.expiresIn');
 
         if (!secret) {
-          throw new Error('JWT secret is not defined');
+          throw new Error('JWT secret is not defined in configuration.');
         }
 
         return {
@@ -34,6 +38,6 @@ import { StringValue } from 'ms';
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
-  exports: [AuthService],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

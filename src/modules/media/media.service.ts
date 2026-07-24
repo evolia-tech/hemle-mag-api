@@ -39,7 +39,6 @@ export class MediaService {
     file: Express.Multer.File,
     entityType: string,
     entityId: string,
-    ownerId: string,
     uploadOptions?: {
       isPrimary?: boolean;
       isPrivate?: boolean;
@@ -92,7 +91,6 @@ export class MediaService {
       size: processedBuffer.length,
       entityType,
       entityId,
-      ownerId,
       isPrimary: uploadOptions?.isPrimary ?? false,
       isPrivate: uploadOptions?.isPrivate ?? false,
       sortOrder: uploadOptions?.sortOrder ?? 0,

@@ -30,10 +30,6 @@ export class CreateMagazineDto {
   @IsString()
   number: string;
 
-  @IsOptional()
-  @IsString()
-  subtitle?: string;
-
   @IsString()
   summary: string;
 
@@ -51,11 +47,18 @@ export class CreateMagazineDto {
 
   @IsOptional()
   @Transform(({ value }) => {
-    if (typeof value === 'string') return JSON.parse(value);
+    // Si la valeur est une chaîne (FormData), on la parse
+    if (typeof value === 'string') {
+      try {
+        return JSON.parse(value);
+      } catch (e) {
+        return [];
+      }
+    }
     return value;
   })
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => SectionDto)
+  @Type(() => SectionDto) // Re-convertit les objets simples en instances de SectionDto
   sections: SectionDto[];
 }

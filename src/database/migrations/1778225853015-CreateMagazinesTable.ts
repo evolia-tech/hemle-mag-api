@@ -38,16 +38,6 @@ export class CreateMagazinesTable1778225853015
             isNullable: true,
           },
           {
-            name: 'created_by_id',
-            type: 'uuid',
-            isNullable: true,
-          },
-          {
-            name: 'updated_by_id',
-            type: 'uuid',
-            isNullable: true,
-          },
-          {
             name: 'slug',
             type: 'varchar',
             isUnique: true,
@@ -59,11 +49,6 @@ export class CreateMagazinesTable1778225853015
           {
             name: 'title',
             type: 'varchar',
-          },
-          {
-            name: 'subtitle',
-            type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'summary',

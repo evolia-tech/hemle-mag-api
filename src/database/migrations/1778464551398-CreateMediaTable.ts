@@ -65,10 +65,6 @@ export class CreateMediaTable1778464551398 implements MigrationInterface {
                         default: 0,
                     },
                     {
-                        name: 'ownerId',
-                        type: 'uuid',
-                    },
-                    {
                         name: 'createdAt',
                         type: 'timestamptz',
                         default: 'now()',

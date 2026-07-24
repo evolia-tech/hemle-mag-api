@@ -1,50 +1,53 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../modules/users/users.service';
 import { LoginDto } from './dto/login.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { StaffsService } from 'src/modules/staffs/staffs.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly staffsService: StaffsService,
     private readonly jwtService: JwtService,
   ) {}
 
   async login(dto: LoginDto) {
-    const user = await this.usersService.findByEmail(dto.email);
+    // findByEmail charge explicitement le password via QueryBuilder
+    const staff = await this.staffsService.findByEmail(dto.email);
 
-    if (!user) {
+    if (!staff) {
+      // Message générique pour éviter l'énumération des comptes
       throw new UnauthorizedException('Email ou mot de passe invalide.');
     }
 
-    if (!user.isActive) {
-      throw new UnauthorizedException('Compte désactivé.');
+    if (!staff.isActive) {
+      throw new UnauthorizedException('Compte désactivé. Contactez un administrateur.');
     }
 
-    const isPasswordValid = await user.comparePassword(dto.password);
+    const isPasswordValid = await staff.comparePassword(dto.password);
 
     if (!isPasswordValid) {
       throw new UnauthorizedException('Email ou mot de passe invalide.');
     }
 
     const payload: JwtPayload = {
-      sub: user.id,
-      email: user.email,
-      role: user.role,
-      firstName: user.firstName,
-      lastName: user.lastName,
+      sub: staff.id,
+      email: staff.email,
+      roles: staff.roles, // tableau de rôles RBAC
+      firstName: staff.firstName,
+      lastName: staff.lastName,
     };
 
-    const { password, ...safeUser } = user;
+    // On retourne le staff sans le password
+    const { password: _pwd, ...safeStaff } = staff;
 
     return {
       accessToken: this.jwtService.sign(payload),
-      user: safeUser,
+      staff: safeStaff,
     };
   }
 
-  async me(userId: string) {
-    return this.usersService.findById(userId);
+  async me(staffId: string) {
+    return this.staffsService.findById(staffId);
   }
 }

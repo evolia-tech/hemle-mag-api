@@ -1,0 +1,36 @@
+<div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
+  <div style="background-color: #0c2f2a; padding: 25px; text-align: center; border-radius: 8px 8px 0 0;">
+    <h1 style="color: white; margin: 0; font-size: 26px; letter-spacing: 2px; font-weight: 500;">HEMLE MAG</h1>
+  </div>
+  <div style="padding: 30px; border: 1px solid #e0e0e0; border-top: none; border-radius: 0 0 8px 8px; background-color: #ffffff;">
+    <p style="font-size: 16px; font-weight: bold; color: #0c2f2a; margin-top: 0;">Nouvel Article Disponible !</p>
+    
+    {{#if articleCoverUrl}}
+      <div style="text-align: center; margin-bottom: 20px;">
+        <img src="{{articleCoverUrl}}" alt="{{articleTitle}}" style="max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" />
+      </div>
+    {{/if}}
+
+    <h2 style="font-size: 20px; color: #333; margin: 0 0 10px 0;">{{articleTitle}}</h2>
+    
+    {{#if articleSummary}}
+      <p style="font-size: 15px; color: #555; margin-bottom: 25px;">{{articleSummary}}</p>
+    {{/if}}
+
+    <div style="text-align: center; margin-bottom: 30px;">
+      <a href="{{articleUrl}}" style="display: inline-block; padding: 12px 25px; background-color: #0c2f2a; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 15px; font-family: sans-serif;">Lire l'article complet</a>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid #eee; margin: 25px 0;" />
+    
+    <p style="font-size: 12px; color: #888; text-align: center; margin-bottom: 5px;">
+      Vous recevez cet e-mail car vous êtes abonné à la newsletter de HEMLE MAG.
+    </p>
+    <p style="font-size: 12px; color: #888; text-align: center; margin: 0;">
+      <a href="{{unsubscribeUrl}}" style="color: #ef4444; text-decoration: underline;">Se désabonner</a>
+    </p>
+    <p style="font-size: 11px; color: #999; text-align: center; margin-top: 20px;">
+      HEMLE MAG &copy; {{currentYear}}. Tous droits réservés.
+    </p>
+  </div>
+</div>

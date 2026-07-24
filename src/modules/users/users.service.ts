@@ -1,108 +1,26 @@
-import {
-  Injectable,
-  NotFoundException,
-  ConflictException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User)
-    private readonly userRepo: Repository<User>,
-  ) {}
-
-  private sanitize(user: User) {
-    const { password, ...safeUser } = user;
-    return safeUser as User;
+  create(createUserDto: CreateUserDto) {
+    return 'This action adds a new user';
   }
 
-  async create(dto: CreateUserDto, createdById?: string): Promise<User> {
-    const exists = await this.userRepo.findOne({
-      where: { email: dto.email },
-    });
-
-    if (exists) {
-      throw new ConflictException(
-        'Un utilisateur avec cet email existe déjà.',
-      );
-    }
-
-    const user = this.userRepo.create({
-      ...dto,
-      createdById,
-    });
-
-    const saved = await this.userRepo.save(user);
-    return this.sanitize(saved);
+  findAll() {
+    return `This action returns all users`;
   }
 
-  async findAll(): Promise<User[]> {
-    const users = await this.userRepo.find({
-      order: { createdAt: 'DESC' },
-    });
-
-    return users.map((user) => this.sanitize(user));
+  findOne(id: number) {
+    return `This action returns a #${id} user`;
   }
 
-  async findById(id: string): Promise<User> {
-    const user = await this.userRepo.findOne({
-      where: { id },
-    });
-
-    if (!user) {
-      throw new NotFoundException('Utilisateur non trouvé');
-    }
-
-    return this.sanitize(user);
+  update(id: number, updateUserDto: UpdateUserDto) {
+    return `This action updates a #${id} user`;
   }
 
-  async findEntityById(id: string): Promise<User> {
-    const user = await this.userRepo.findOne({
-      where: { id },
-    });
-
-    if (!user) {
-      throw new NotFoundException('Utilisateur non trouvé');
-    }
-
-    return user;
-  }
-
-  async findByEmail(email: string): Promise<User | null> {
-    return this.userRepo.findOne({
-      where: { email },
-    });
-  }
-
-  async update(
-    id: string,
-    dto: UpdateUserDto,
-    updatedById?: string,
-  ): Promise<User> {
-    const user = await this.userRepo.findOne({
-      where: { id },
-    });
-
-    if (!user) {
-      throw new NotFoundException('Utilisateur non trouvé');
-    }
-
-    Object.assign(user, dto, { updatedById });
-
-    const saved = await this.userRepo.save(user);
-    return this.sanitize(saved);
-  }
-
-  async remove(id: string): Promise<void> {
-    const result = await this.userRepo.softDelete(id);
-
-    if (result.affected === 0) {
-      throw new NotFoundException('Utilisateur non trouvé');
-    }
+  remove(id: number) {
+    return `This action removes a #${id} user`;
   }
 }
